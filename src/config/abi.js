@@ -30,6 +30,7 @@ export const FORGE_ABI = [
   "function unstakeGold(uint256 amt)",
   "function claimFees()",
   "function buyAndBurn(uint256 amount, uint256 minOut, uint24 fee)",
+  "function claimAndBurn(uint256 minOut, uint24 fee)",
   "function claimRewards()",
   "function claimEth()",
 

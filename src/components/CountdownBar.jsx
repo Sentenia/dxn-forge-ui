@@ -36,7 +36,6 @@ export default function CountdownBar({ data, actions, wallet }) {
     if (!canFire || firing) return;
     setFiring(true);
     try {
-      await actions.claimFees();
       await actions.buyAndBurn();
     } catch (err) {
       console.error("B&B failed:", err);

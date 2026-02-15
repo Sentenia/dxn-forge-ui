@@ -86,7 +86,7 @@ export function useForgeActions(chain, signer, refetch) {
   async function buyAndBurn(minOut, poolFee) {
     minOut = minOut || 0;
     poolFee = poolFee || 10000;
-    const tx = await forge.buyAndBurn(0, minOut, poolFee);
+    const tx = await forge.claimAndBurn(minOut, poolFee);
     await tx.wait();
     refetch();
   }

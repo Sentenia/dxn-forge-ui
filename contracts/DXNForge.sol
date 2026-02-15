@@ -609,6 +609,63 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
         emit BuyBurn(epoch - 1, toBurn, dxn, dxn);
     }
 
+    /// @notice Combined claimFees + buyAndBurn in one atomic transaction
+    function claimAndBurn(uint256 minOut, uint24 fee) external nonReentrant {
+        _transDXN(msg.sender);
+        _transGold(msg.sender);
+
+        // === claimFees logic ===
+        if (block.timestamp < lastFeeTime + feeInterval) revert Cooldown();
+        try DBXEN.claimFees() {} catch {}
+        xenFeePool = 0;
+        uint256 tot = address(this).balance - pendingBurn - ltsReserve - goldEthReserve;
+        if (tot > 0) {
+            uint256 toGold = (tot * FEE_GOLD) / FEE_BASE;
+            uint256 toBurnFee = (tot * FEE_BURN) / FEE_BASE;
+            uint256 toLts  = tot - toGold - toBurnFee;
+            uint256 elig = totEligGold();
+            if (elig > 0) {
+                accEth += (toGold * ACC) / elig;
+                goldEthReserve += toGold;
+            }
+            pendingBurn += toBurnFee;
+            ltsReserve  += toLts;
+            emit Fees(tot, toGold, toBurnFee, toLts);
+        }
+        uint256 wt = totWt();
+        if (wt > 0) {
+            uint256 m = mult();
+            accTix += (ACC * m * TIX_DEC) / (wt * 100);
+            tixEpoch += (m * TIX_DEC) / 100;
+            stakerTixEpoch += (m * TIX_DEC) / 100;
+            emit Tix(wt, accTix, m);
+        }
+        lastFeeTime = block.timestamp;
+
+        // === buyAndBurn logic ===
+        if (pendingBurn < MIN_BURN) revert NoBurn();
+        if (tixEpoch == 0) revert NoTix();
+        if (fee == 0) fee = 10000;
+        uint256 eth = pendingBurn;
+        pendingBurn = 0;
+        IWETH(WETH).deposit{value: eth}();
+        IERC20(WETH).approve(address(ROUTER), eth);
+        uint256 dxn = ROUTER.exactInputSingle(
+            ISwapRouter.ExactInputSingleParams(WETH, address(DXN), fee, address(this), eth, minOut, 0)
+        );
+        DXN.safeTransfer(DEAD, dxn);
+        GOLD.mint(address(this), dxn);
+        epAcc[epoch]  = accTix;
+        epTix[epoch]  = tixEpoch;
+        epGold[epoch] = dxn;
+        epDone[epoch] = true;
+        accTix = 0;
+        tixEpoch = 0;
+        stakerTixEpoch = 0;
+        epoch++;
+        emit BuyBurn(epoch - 1, eth, dxn, dxn);
+    }
+
     // ══════════════════════════════════════════════════
     // ── LTS Bridge Functions (callable only by LTS) ──
     // ══════════════════════════════════════════════════
