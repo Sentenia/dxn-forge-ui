@@ -1,6 +1,6 @@
 const { ethers } = require("ethers");
 
-const RPC = "https://rpc.sepolia.org";
+const RPC = process.env.SEPOLIA_RPC || "https://rpc.sepolia.org";
 const FORGE = "0xbcA92C437e7433390cE1D5aC5d4F54e9aBd0B146";
 const USER = "0x8B15d4b385eeCeC23cA32C8Dc45a48876d5FcbF4";
 

@@ -120,7 +120,7 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
     uint256 public accTix;
     uint256 public tixEpoch;
     uint256 public stakerTixEpoch;
-    mapping(address => uint256) public userTix;
+    mapping(address => mapping(uint256 => uint256)) public userBurnTix;  // per-epoch burn tickets
     mapping(address => uint256) public userTixDebt;
     mapping(address => uint256) public userTixEp;
 
@@ -295,7 +295,7 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
         XEN.burn(msg.sender, xenAmt);
 
         uint256 tix = (b * TIX_DEC) / XEN_BATCH_TIX;
-        userTix[msg.sender] += tix;
+        userBurnTix[msg.sender][epoch] += tix;
         tixEpoch += tix;
 
         xenBurned += xenAmt;
@@ -331,11 +331,14 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
     }
 
     function pendTix(address u) public view returns (uint256) {
-        if (userTixEp[u] < epoch) return 0;
+        uint256 burnTix = userBurnTix[u][epoch];
         uint256 w = userWt(u);
-        if (w == 0) return 0;
-        uint256 owed = (w * accTix) / ACC;
-        return owed > userTixDebt[u] ? owed - userTixDebt[u] : 0;
+        uint256 stakerTix = 0;
+        if (w > 0) {
+            uint256 owed = (w * accTix) / ACC;
+            stakerTix = owed > userTixDebt[u] ? owed - userTixDebt[u] : 0;
+        }
+        return burnTix + stakerTix;
     }
 
     /// @notice Actual circulating DXN supply (excludes burned)
@@ -751,8 +754,6 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
         if (userTixEp[u] != 0 && userTixEp[u] < epoch) {
             _allocGold(u);
         }
-        uint256 p = pendTix(u);
-        if (p > 0) userTix[u] += p;
         userTixDebt[u] = (userWt(u) * accTix) / ACC;
         userTixEp[u] = epoch;
     }
@@ -761,13 +762,12 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
         uint256 ep = userTixEp[u];
         if (ep == 0 || ep >= epoch) return;
 
-        uint256 tix = userTix[u];
         uint256 w = userWt(u);
         uint256 debt = userTixDebt[u];
 
         while (ep < epoch) {
             if (epDone[ep]) {
-                uint256 epTotalTix = tix;
+                uint256 epTotalTix = userBurnTix[u][ep];
                 if (w > 0 && epAcc[ep] > 0) {
                     uint256 owed = (w * epAcc[ep]) / ACC;
                     if (owed > debt) epTotalTix += owed - debt;
@@ -783,12 +783,10 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
                     }
                 }
             }
-            tix = 0;
             debt = 0;
             ep++;
         }
 
-        userTix[u] = 0;
         userTixDebt[u] = 0;
         userTixEp[u] = epoch;
     }
@@ -897,7 +895,7 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
             d.fresh, d.freshCy, d.ripe, d.ripeCy, d.staked,
             autoGold[u],
             m.fresh, m.freshCy, m.ripe, m.ripeCy, m.staked,
-            pendEth(u), pendTix(u), userTix[u],
+            pendEth(u), pendTix(u), userBurnTix[u][epoch],
             userWt(u), userEligGold(u),
             userLtsDXN[u], userLtsGold[u], userXenBurned[u]
         );
