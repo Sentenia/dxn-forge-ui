@@ -574,7 +574,8 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
     // ══════════════════════════════════════════════════
 
     function buyAndBurn(uint256 amount, uint256 minOut, uint24 fee) external nonReentrant {
-        _sync(msg.sender);
+        _transDXN(msg.sender);
+        _transGold(msg.sender);
 
         if (pendingBurn < MIN_BURN) revert NoBurn();
         if (tixEpoch == 0) revert NoTix();

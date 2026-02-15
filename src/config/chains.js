@@ -24,7 +24,7 @@ export const CHAINS = {
     dxnName: "DXN",
     xenName: "XEN",
     gasName: "ETH",
-    forge: "0x096412FCf0f6c195d7f607CDE0907822ef0e45Fd",
+    forge: "0x12F7E16873Ac89Cd555965f9DAbDA548e84C64fE",
     dxn: "0x7276c4Ce66d472d2Bd23C06A3d4c34790111720A",
     xen: "0xC63b6E79f952E086bFF4Fe8018062427616AdCd7",
     gold: "0x59416D0C2Fee58ce67c33a64B43159f1736b6809",
