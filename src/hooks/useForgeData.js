@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Contract, JsonRpcProvider, formatEther } from "ethers";
 import { FORGE_ABI, ERC20_ABI } from "../config/abi";
 
@@ -7,6 +7,7 @@ const POLL_MS = 5000;
 export function useForgeData(chain, account, provider) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const errorCount = useRef(0);
 
   const fetchData = useCallback(async () => {
     if (!chain?.forge || !chain?.rpc) return;
@@ -142,14 +143,19 @@ export function useForgeData(chain, account, provider) {
 
       setData(result);
       setLoading(false);
+      errorCount.current = 0;
     } catch (err) {
       console.error("Forge read failed:", err);
+      errorCount.current++;
     }
   }, [chain, account]);
 
   useEffect(() => {
     fetchData();
-    const iv = setInterval(fetchData, POLL_MS);
+    const delay = errorCount.current > 0
+      ? Math.min(POLL_MS * Math.pow(2, errorCount.current), 60000)
+      : POLL_MS;
+    const iv = setInterval(fetchData, delay);
     return () => clearInterval(iv);
   }, [fetchData]);
 

@@ -50,7 +50,7 @@ export function useLiveFeed(chain) {
     async function loadRecent() {
       try {
         const block = await rpc.getBlockNumber();
-        const from = Math.max(0, block - 500);
+        const from = Math.max(0, block - 10);
         const opts = { fromBlock: from, toBlock: "latest" };
 
         const [burns, stakes, unstakes, buyburns, goldStakes, goldUnstakes, rewards, ethClaims] = await Promise.all([
