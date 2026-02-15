@@ -1,0 +1,68 @@
+﻿.header { display:flex; align-items:center; justify-content:space-between; padding:16px 28px; border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(8,8,12,0.95); backdrop-filter:blur(12px); position:sticky; top:0; z-index:100; }
+.header-left { display:flex; align-items:center; gap:14px; }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-text { font-size:24px; font-weight:800; letter-spacing:0.04em; background:linear-gradient(135deg,#ff9d00,#ffb700); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.price-box { display:flex; align-items:center; gap:12px; }
+.price-label { font-size:14px; color:#888; font-weight:600; letter-spacing:0.05em; }
+.price-value { font-size:22px; font-weight:700; font-family:"JetBrains Mono",monospace; color:#fff; transition:color 0.3s; }
+.price-change { font-size:15px; font-weight:600; font-family:"JetBrains Mono",monospace; }
+.header-right { display:flex; align-items:center; gap:10px; }
+
+/* Chain selector */
+.chain-selector { position:relative; }
+.chain-btn { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#ddd; font-size:14px; font-weight:600; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.2s; }
+.chain-btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
+.chain-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.chain-name { font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; }
+.chain-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:#141418; border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:6px; min-width:200px; z-index:200; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
+.chain-option { display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px; border:none; border-radius:8px; background:transparent; color:#aaa; font-size:14px; font-weight:500; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.15s; }
+.chain-option:hover { background:rgba(255,255,255,0.06); color:#fff; }
+.chain-active { background:rgba(255,255,255,0.08); color:#fff; }
+.chain-short { margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:12px; color:#666; }
+
+/* Wallet button */
+.wallet-btn { display:flex; align-items:center; gap:8px; padding:10px 24px; border-radius:10px; border:1px solid rgba(255,157,0,0.3); background:rgba(255,157,0,0.1); color:#ff9d00; font-weight:600; font-size:15px; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.2s; }
+.wallet-btn:hover { background:rgba(255,157,0,0.2); border-color:rgba(255,157,0,0.5); box-shadow:0 0 20px rgba(255,157,0,0.15); }
+
+/* Connected wallet button */
+.wallet-area { position:relative; }
+.wallet-connected { padding:8px 14px; gap:0; }
+.wallet-eth { font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:#fff; }
+.wallet-divider { width:1px; height:18px; background:rgba(255,157,0,0.3); margin:0 12px; }
+.wallet-addr { font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:600; color:#ff9d00; }
+
+/* Wallet dropdown */
+.wallet-dropdown { position:absolute; top:calc(100% + 8px); right:0; background:#141418; border:1px solid rgba(255,157,0,0.15); border-radius:12px; padding:0; min-width:280px; z-index:200; box-shadow:0 16px 48px rgba(0,0,0,0.7); overflow:hidden; }
+
+.wallet-dd-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.wallet-dd-addr { font-family:"JetBrains Mono",monospace; font-size:14px; font-weight:700; color:#ff9d00; }
+.wallet-dd-actions { display:flex; gap:8px; }
+.wallet-dd-icon { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:#888; cursor:pointer; transition:all 0.15s; text-decoration:none; position:relative; }
+.wallet-dd-icon:hover { background:rgba(255,255,255,0.08); color:#fff; border-color:rgba(255,255,255,0.2); }
+.copied-tip { position:absolute; top:-28px; left:50%; transform:translateX(-50%); background:#ff9d00; color:#000; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; white-space:nowrap; font-family:"Outfit",sans-serif; }
+
+/* Token balances */
+.wallet-dd-balances { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.wallet-dd-row { display:flex; align-items:center; justify-content:space-between; padding:6px 0; }
+.wallet-dd-token { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#ddd; }
+.token-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.wallet-dd-val { font-family:"JetBrains Mono",monospace; font-size:14px; font-weight:700; color:#fff; }
+
+/* Staked / protocol positions */
+.wallet-dd-staked { padding:12px 16px; }
+.wallet-dd-sub { font-size:13px; color:#888; padding:4px 0; }
+.wallet-dd-sub span:last-child { font-family:"JetBrains Mono",monospace; font-size:13px; color:#aaa; font-weight:600; }
+
+/* Testnet faucet bar */
+.testnet-bar { display:flex; align-items:center; justify-content:center; gap:12px; padding:8px 20px; background:linear-gradient(90deg, rgba(255,157,0,0.08), rgba(255,68,68,0.08)); border-bottom:1px solid rgba(255,157,0,0.15); }
+.testnet-label { font-size:11px; font-weight:700; letter-spacing:0.1em; color:#ff9d00; background:rgba(255,157,0,0.15); padding:3px 8px; border-radius:4px; }
+.faucet-btn { padding:6px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#ddd; font-size:12px; font-weight:600; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.2s; text-decoration:none; }
+.faucet-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.25); color:#fff; }
+.faucet-link { color:#00d4ff; border-color:rgba(0,212,255,0.3); }
+.faucet-link:hover { background:rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.5); }
+
+@media (max-width: 640px) {
+  .header { flex-wrap:wrap; gap:12px; padding:12px 16px; justify-content:center; }
+  .price-box { order:3; flex-basis:100%; justify-content:center; }
+  .header-right { order:2; }
+}

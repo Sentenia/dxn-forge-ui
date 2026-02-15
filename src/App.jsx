@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+﻿import { useWallet } from "./hooks/useWallet";
+import { useForgeData } from "./hooks/useForgeData";
+import { useForgeActions } from "./hooks/useForgeActions";
+import { useLiveFeed } from "./hooks/useLiveFeed";
+import { useMockData } from "./hooks/useMockData";
+import Header from "./components/Header";
+import CountdownBar from "./components/CountdownBar";
+import WarBar from "./components/WarBar";
+import ProgressCards from "./components/ProgressCards";
+import ActionZone from "./components/ActionZone";
+import LiveFeed from "./components/LiveFeed";
+import StatsRow from "./components/StatsRow";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const wallet = useWallet();
+  const { data: liveData, loading, refetch } = useForgeData(wallet.chain, wallet.account, wallet.provider);
+  const actions = useForgeActions(wallet.chain, wallet.signer, refetch);
+  const feed = useLiveFeed(wallet.chain);
+  const mockData = useMockData();
+
+  // Use live data if available, fall back to mock
+  const data = liveData || mockData;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <Header data={data} wallet={wallet} actions={actions} />
+      <CountdownBar data={data} actions={actions} wallet={wallet} />
+      <WarBar data={data} />
+      <ProgressCards data={data} wallet={wallet} />
+      <ActionZone data={data} actions={actions} wallet={wallet} />
+      <LiveFeed feed={feed} chain={wallet.chain} />
+      <StatsRow data={data} />
+      {loading && liveData === null && (
+        <div className="loading-overlay">Connecting to chain...</div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

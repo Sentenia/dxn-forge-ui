@@ -1,0 +1,31 @@
+﻿.dual-progress { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 28px 20px; max-width:900px; margin:0 auto; }
+.progress-card { background:rgba(255,255,255,0.02); border-radius:14px; padding:20px 22px; }
+.staker-card { border:1px solid rgba(255,157,0,0.15); }
+.burner-card { border:1px solid rgba(220,50,50,0.2); }
+.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.progress-title { font-size:14px; font-weight:700; color:#aaa; letter-spacing:0.08em; }
+.progress-badge { font-size:14px; font-weight:700; padding:3px 12px; border-radius:20px; font-family:"JetBrains Mono",monospace; }
+.staker-badge { background:rgba(255,157,0,0.15); color:#ffb700; }
+.burner-badge { background:rgba(220,50,50,0.15); color:#ff6644; }
+.progress-big-num { font-size:38px; font-weight:800; font-family:"JetBrains Mono",monospace; line-height:1.1; }
+.staker-num { color:#ff9d00; }
+.burner-num { color:#ff6644; }
+.progress-sub { font-size:14px; color:#888; margin-top:4px; }
+.progress-supply { font-size:12px; color:#555; margin-top:2px; margin-bottom:14px; }
+.tier-track { height:6px; border-radius:3px; overflow:hidden; margin-bottom:16px; }
+.staker-track { background:rgba(255,157,0,0.1); }
+.burner-track { background:rgba(220,50,50,0.1); }
+.tier-fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
+.staker-fill { background:linear-gradient(90deg,#ff9d00,#ffb700); }
+.burner-fill { background:linear-gradient(90deg,#ff4444,#ff6644); }
+.progress-summary { background:rgba(0,0,0,0.3); border-radius:10px; padding:14px 16px; }
+.staker-summary { border:1px solid rgba(255,157,0,0.1); }
+.burner-summary { border:1px solid rgba(220,50,50,0.1); }
+.summary-row { display:flex; justify-content:space-between; padding:6px 0; font-size:16px; }
+.summary-label { color:#888; font-weight:600; }
+.summary-value { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:18px; }
+.summary-note { font-size:12px; color:#555; margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06); }
+
+@media (max-width: 640px) {
+  .dual-progress { grid-template-columns:1fr; padding:0 16px 16px; }
+}

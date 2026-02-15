@@ -1,0 +1,17 @@
+﻿.war-section { padding:24px 28px 20px; max-width:900px; margin:0 auto; }
+.war-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.war-title { font-size:14px; font-weight:700; color:#666; letter-spacing:0.12em; }
+.war-side { font-size:14px; font-weight:600; color:#aaa; display:flex; align-items:center; gap:6px; }
+.war-pct { font-family:"JetBrains Mono",monospace; font-weight:700; color:#fff; font-size:16px; }
+.war-icon { font-size:14px; }
+.war-bar-outer { display:flex; height:44px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); }
+.war-bar-left { background:linear-gradient(90deg,rgba(255,157,0,0.2),rgba(255,183,0,0.35)); display:flex; align-items:center; justify-content:center; transition:width 1s cubic-bezier(0.4,0,0.2,1); min-width:80px; }
+.war-bar-divider { width:2px; background:rgba(255,255,255,0.2); z-index:2; box-shadow:0 0 8px rgba(255,255,255,0.1); }
+.war-bar-right { background:linear-gradient(90deg,rgba(220,50,50,0.35),rgba(255,102,68,0.2)); display:flex; align-items:center; justify-content:center; transition:width 1s cubic-bezier(0.4,0,0.2,1); min-width:80px; }
+.war-bar-label { font-size:14px; font-weight:700; font-family:"JetBrains Mono",monospace; color:rgba(255,255,255,0.7); letter-spacing:0.03em; }
+
+@media (max-width: 640px) {
+  .war-section { padding:16px 16px 12px; }
+  .war-header { flex-wrap:wrap; gap:6px; justify-content:center; }
+  .war-title { flex-basis:100%; text-align:center; order:-1; margin-bottom:4px; }
+}

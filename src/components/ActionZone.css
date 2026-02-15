@@ -1,0 +1,60 @@
+﻿.action-zone { padding:0 28px 20px; max-width:900px; margin:0 auto; }
+.tabs { display:flex; gap:8px; margin-bottom:16px; }
+.tab { flex:1; padding:12px 20px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:#888; font-size:15px; font-weight:700; cursor:pointer; font-family:"Outfit",sans-serif; letter-spacing:0.04em; transition:all 0.2s; }
+.tab:hover { background:rgba(255,255,255,0.04); }
+.tab-burn-active { background:linear-gradient(135deg,#ff4444,#ff6644)!important; color:#fff!important; border-color:#ff4444!important; box-shadow:0 4px 20px rgba(255,68,68,0.2); }
+.tab-stake-active { background:linear-gradient(135deg,#ff9d00,#ffb700)!important; color:#000!important; border-color:#ff9d00!important; box-shadow:0 4px 20px rgba(255,157,0,0.2); }
+.tab-gold-active { background:linear-gradient(135deg,#ffb700,#ffd000)!important; color:#000!important; border-color:#ffb700!important; box-shadow:0 4px 20px rgba(255,183,0,0.2); }
+.action-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:24px; }
+.action-title { font-size:22px; font-weight:700; color:#fff; margin-bottom:6px; }
+.action-desc { font-size:15px; color:#888; margin-bottom:20px; line-height:1.5; }
+.input-group { margin-bottom:18px; }
+.input-label { font-size:13px; color:#888; font-weight:600; margin-bottom:10px; display:block; letter-spacing:0.06em; }
+.input-row { display:flex; align-items:center; gap:10px; }
+.slider { -webkit-appearance:none; appearance:none; height:6px; border-radius:3px; outline:none; flex:1; }
+.burn-slider { background:linear-gradient(90deg,#ff4444 0%,#ff6644 100%); }
+.slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid #ff4444; cursor:pointer; box-shadow:0 0 10px rgba(255,68,68,0.3); transition:transform 0.15s; }
+.slider::-webkit-slider-thumb:hover { transform:scale(1.15); }
+.num-input { width:90px; padding:10px 12px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-family:"JetBrains Mono",monospace; font-size:16px; font-weight:600; text-align:center; outline:none; }
+.num-input:focus { border-color:rgba(255,68,68,0.5); }
+.text-input { flex:1; padding:12px 14px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-family:"JetBrains Mono",monospace; font-size:16px; font-weight:500; outline:none; }
+.text-input:focus { border-color:rgba(255,157,0,0.5); }
+.max-btn { padding:12px 18px; background:rgba(255,157,0,0.1); border:1px solid rgba(255,157,0,0.25); border-radius:8px; color:#ff9d00; font-weight:700; font-size:13px; cursor:pointer; letter-spacing:0.06em; font-family:"Outfit",sans-serif; transition:all 0.2s; }
+.max-btn:hover { background:rgba(255,157,0,0.2); border-color:rgba(255,157,0,0.5); }
+.batch-presets { display:flex; gap:6px; margin-top:10px; }
+.preset-btn { padding:6px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#888; font-size:14px; font-weight:600; cursor:pointer; font-family:"JetBrains Mono",monospace; transition:all 0.15s; }
+.preset-btn:hover { background:rgba(255,68,68,0.1); border-color:rgba(255,68,68,0.3); color:#ff6644; }
+.preset-active { background:rgba(255,68,68,0.15)!important; border-color:#ff4444!important; color:#ff6644!important; }
+.fee-breakdown { background:rgba(0,0,0,0.3); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
+.fee-row { display:flex; justify-content:space-between; padding:5px 0; font-size:15px; color:#aaa; }
+.fee-val { font-family:"JetBrains Mono",monospace; font-size:15px; }
+.fee-total-label { font-weight:700; }
+.fee-total { font-weight:700; font-size:17px; }
+.burn-color { color:#ff6644; }
+.green-color { color:#00ff88; }
+.gold-color { color:#ffb700; }
+.white { color:#fff; }
+.fee-divider { height:1px; background:rgba(255,255,255,0.06); margin:6px 0; }
+.action-btn { width:100%; padding:16px; border-radius:10px; border:none; font-size:17px; font-weight:700; cursor:pointer; font-family:"Outfit",sans-serif; letter-spacing:0.03em; transition:all 0.2s; }
+.burn-btn { background:linear-gradient(135deg,#ff4444,#ff6644); color:#fff; box-shadow:0 4px 20px rgba(255,68,68,0.25); }
+.burn-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,68,68,0.35); }
+.stake-btn { background:linear-gradient(135deg,#ff9d00,#ffb700); color:#000; box-shadow:0 4px 20px rgba(255,157,0,0.25); }
+.stake-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,157,0,0.35); }
+.gold-btn { background:linear-gradient(135deg,#ffb700,#ffd000); color:#000; box-shadow:0 4px 20px rgba(255,183,0,0.25); }
+.gold-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,183,0,0.35); }
+.gold-input:focus { border-color:rgba(255,183,0,0.5); }
+.gold-max { background:rgba(255,183,0,0.1); border-color:rgba(255,183,0,0.25); color:#ffb700; }
+.gold-max:hover { background:rgba(255,183,0,0.2); border-color:rgba(255,183,0,0.5); }
+.secondary-row { display:flex; gap:8px; margin-top:10px; }
+.secondary-btn { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#aaa; font-size:14px; font-weight:600; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.2s; }
+.secondary-btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); color:#fff; }
+.action-status { text-align:center; padding:8px 12px; margin-bottom:12px; border-radius:8px; background:rgba(255,157,0,0.1); border:1px solid rgba(255,157,0,0.2); color:#ff9d00; font-size:14px; font-weight:600; }
+.action-subtitle { font-size:16px; font-weight:700; color:#ffd700; margin-bottom:6px; }
+.claim-highlight { border-color:rgba(255,215,0,0.3) !important; color:#ffd700 !important; background:rgba(255,215,0,0.06) !important; }
+.claim-highlight:hover:not(:disabled) { background:rgba(255,215,0,0.12) !important; border-color:rgba(255,215,0,0.5) !important; }
+.action-status { text-align:center; padding:8px 12px; margin-bottom:12px; border-radius:8px; background:rgba(255,157,0,0.1); border:1px solid rgba(255,157,0,0.2); color:#ff9d00; font-size:14px; font-weight:600; }
+.wallet-balance { font-family:"JetBrains Mono",monospace; font-size:13px; color:#888; margin-bottom:6px; }
+@media (max-width: 640px) {
+  .action-zone { padding:0 16px 16px; }
+  .batch-presets { flex-wrap:wrap; }
+}

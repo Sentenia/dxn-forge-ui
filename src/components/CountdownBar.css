@@ -1,0 +1,30 @@
+﻿.countdown-bar { padding:14px 28px; background:linear-gradient(180deg,rgba(255,157,0,0.04) 0%,transparent 100%); border-bottom:1px solid rgba(255,255,255,0.04); }
+.countdown-inner { display:flex; align-items:center; gap:20px; max-width:900px; margin:0 auto; }
+.countdown-left { display:flex; flex-direction:column; gap:2px; min-width:160px; }
+.countdown-label { font-size:13px; font-weight:700; color:#888; letter-spacing:0.1em; }
+.countdown-time { font-size:28px; font-weight:700; font-family:"JetBrains Mono",monospace; }
+.countdown-center { flex:1; display:flex; flex-direction:column; gap:10px; }
+.countdown-track { height:6px; border-radius:3px; background:rgba(255,255,255,0.06); overflow:hidden; }
+.countdown-fill { height:100%; border-radius:3px; transition:width 1s linear; }
+.countdown-right { display:flex; flex-direction:column; align-items:flex-end; gap:2px; min-width:120px; }
+.countdown-eth { font-size:22px; font-weight:700; font-family:"JetBrains Mono",monospace; color:#fff; }
+.countdown-sub { font-size:13px; color:#666; letter-spacing:0.05em; }
+.bnb-btn { padding:10px 24px; border-radius:8px; border:none; font-size:15px; font-weight:700; cursor:pointer; font-family:"Outfit",sans-serif; letter-spacing:0.04em; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:6px; }
+.bnb-ready { background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; box-shadow:0 0 20px rgba(0,255,136,0.3); animation:pulse 1.5s infinite; }
+.bnb-ready:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(0,255,136,0.5); }
+.bnb-waiting { background:rgba(255,255,255,0.06); color:#555; cursor:not-allowed; border:1px solid rgba(255,255,255,0.08); }
+.bnb-pool { background:rgba(0,0,0,0.3); border-radius:8px; padding:10px 12px; margin-top:6px; }
+.pool-row { display:flex; justify-content:space-between; padding:3px 0; font-size:13px; }
+.pool-label { color:#666; }
+.pool-val { font-family:"JetBrains Mono",monospace; color:#aaa; font-weight:600; }
+.pool-total .pool-label { color:#aaa; font-weight:700; }
+.pool-total .pool-val { color:#fff; font-weight:700; }
+.pool-divider { height:1px; background:rgba(255,255,255,0.06); margin:4px 0; }
+
+@media (max-width: 640px) {
+  .countdown-inner { flex-wrap:wrap; gap:12px; }
+  .countdown-left { min-width:auto; flex:1; }
+  .countdown-center { flex-basis:100%; order:3; }
+  .countdown-right { min-width:auto; }
+  .bnb-pool { font-size:12px; }
+}

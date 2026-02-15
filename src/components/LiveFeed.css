@@ -1,0 +1,32 @@
+﻿.feed-wrapper { padding:0 28px 20px; max-width:900px; margin:0 auto; }
+.feed-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 20px; }
+.feed-title { font-size:14px; font-weight:700; color:#888; letter-spacing:0.1em; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.live-dot { width:7px; height:7px; border-radius:50%; background:#00ff88; animation:pulse 1.5s infinite; box-shadow:0 0 6px rgba(0,255,136,0.5); }
+.feed-list { display:flex; flex-direction:column; gap:2px; max-height:400px; overflow-y:auto; }
+.feed-item { display:flex; align-items:flex-start; gap:10px; padding:9px 8px; border-radius:8px; transition:background 0.2s; }
+.feed-item:hover { background:rgba(255,255,255,0.02); }
+.feed-icon { font-size:16px; margin-top:2px; }
+.feed-content { flex:1; display:flex; flex-direction:column; gap:2px; }
+.feed-addr { font-size:13px; color:#666; font-family:"JetBrains Mono",monospace; }
+.feed-text { font-size:14px; color:#aaa; line-height:1.4; }
+.feed-time { font-size:12px; color:#555; font-family:"JetBrains Mono",monospace; white-space:nowrap; margin-top:2px; }
+.feed-empty { text-align:center; padding:20px; color:#555; font-size:14px; }
+.feed-new { animation:feedSlideIn 0.3s ease-out; }
+
+@keyframes feedSlideIn {
+  from { opacity:0; transform:translateY(-8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity:1; }
+  50% { opacity:0.4; }
+}
+
+.feed-list::-webkit-scrollbar { width:4px; }
+.feed-list::-webkit-scrollbar-track { background:transparent; }
+.feed-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:2px; }
+
+@media (max-width: 640px) {
+  .feed-wrapper { padding:0 16px 16px; }
+}
