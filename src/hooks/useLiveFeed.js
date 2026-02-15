@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Contract, JsonRpcProvider, formatEther } from "ethers";
 import { FORGE_ABI } from "../config/abi";
 
@@ -19,18 +19,6 @@ function timeAgo(ts) {
 
 export function useLiveFeed(chain) {
   const [feed, setFeed] = useState([]);
-  const listenersRef = useRef(null);
-
-  const addItem = useCallback((item) => {
-    setFeed((prev) => {
-      // Dedup: skip if same type+addr within 2 seconds
-      const dominated = prev.length > 0 && prev[0].type === item.type 
-        && prev[0].addr === item.addr 
-        && (Date.now() - prev[0].ts) < 2000;
-      if (dominated) return prev;
-      return [{ ...item, ts: Date.now() }, ...prev].slice(0, MAX_ITEMS);
-    });
-  }, []);
 
   // Refresh "time ago" labels every 10s
   useEffect(() => {
@@ -157,45 +145,13 @@ export function useLiveFeed(chain) {
 
     loadRecent();
 
-    // Live listeners
-    forge.on("XenBurn", (u, batches, tix) => {
-      addItem({ type: "burn", addr: shortAddr(u), batches: Number(batches), tickets: Number(formatEther(tix)).toFixed(4) });
-    });
-
-    forge.on("Staked", (u, amt) => {
-      addItem({ type: "stake", addr: shortAddr(u), amount: Number(formatEther(amt)).toFixed(2) });
-    });
-
-    forge.on("Unstaked", (u, amt) => {
-      addItem({ type: "unstake", addr: shortAddr(u), amount: Number(formatEther(amt)).toFixed(2) });
-    });
-
-    forge.on("BuyBurn", (ep, eth, dxn, gold) => {
-      addItem({ type: "bnb", epoch: Number(ep), eth: Number(formatEther(eth)).toFixed(4), dxn: Number(formatEther(dxn)).toFixed(2), gold: Number(formatEther(gold)).toFixed(2) });
-    });
-
-    forge.on("GoldStaked", (u, amt) => {
-      addItem({ type: "goldstake", addr: shortAddr(u), amount: Number(formatEther(amt)).toFixed(2) });
-    });
-
-    forge.on("GoldUnstaked", (u, amt) => {
-      addItem({ type: "goldunstake", addr: shortAddr(u), amount: Number(formatEther(amt)).toFixed(2) });
-    });
-
-    forge.on("Rewards", (u, gold, eth) => {
-      addItem({ type: "rewards", addr: shortAddr(u), gold: Number(formatEther(gold)).toFixed(2), eth: Number(formatEther(eth)).toFixed(4) });
-    });
-
-    forge.on("EthClaimed", (u, amt) => {
-      addItem({ type: "ethclaim", addr: shortAddr(u), eth: Number(formatEther(amt)).toFixed(4) });
-    });
-
-    listenersRef.current = forge;
+    // Poll for new events every 12s (avoid .on() which uses unbounded block ranges)
+    const pollInterval = setInterval(loadRecent, 12000);
 
     return () => {
-      forge.removeAllListeners();
+      clearInterval(pollInterval);
     };
-  }, [chain, addItem]);
+  }, [chain]);
 
   // Attach timeAgo to each item for display
   const feedWithTime = feed.map((f) => ({ ...f, time: timeAgo(f.ts) }));
