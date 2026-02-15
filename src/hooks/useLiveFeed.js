@@ -35,15 +35,14 @@ export function useLiveFeed(chain) {
   }, [chain]);
 
   const loadRecent = useCallback(async () => {
-    console.log("[LiveFeed] refreshFeed called");
     const rpc = rpcRef.current;
     const forge = forgeRef.current;
     if (!rpc || !forge) return;
 
     try {
       const block = await rpc.getBlockNumber();
-      const from = Math.max(0, block - 10);
-      const opts = { fromBlock: from, toBlock: "latest" };
+      const from = Math.max(0, block - 9);
+      const opts = { fromBlock: from, toBlock: block };
 
       const [burns, stakes, unstakes, buyburns, goldStakes, goldUnstakes, rewards, ethClaims] = await Promise.all([
         forge.queryFilter("XenBurn", opts.fromBlock, opts.toBlock),
