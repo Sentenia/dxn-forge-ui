@@ -186,7 +186,7 @@ export default function Header({ data, wallet, actions }) {
         <span className="testnet-label">TESTNET</span>
         <button className="faucet-btn" onClick={actions?.faucetDXN}>Get {wallet.chain?.dxnName || "DXN"}</button>
         <button className="faucet-btn" onClick={actions?.faucetXEN}>Get {wallet.chain?.xenName || "XEN"}</button>
-        <a className="faucet-btn faucet-link" href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia" target="_blank" rel="noopener noreferrer">Get Sepolia ETH</a>
+        <a className="faucet-btn faucet-link" href="https://faucets.chain.link/sepolia" target="_blank" rel="noopener noreferrer">Get Sepolia ETH</a>
       </div>
     )}
   </>

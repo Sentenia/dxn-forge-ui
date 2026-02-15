@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node test/debug-sepolia.cjs:*)",
+      "Bash(timeout 45 node:*)",
+      "Bash(npx hardhat compile:*)"
+    ]
+  }
+}

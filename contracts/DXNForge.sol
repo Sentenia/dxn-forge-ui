@@ -26,7 +26,6 @@ interface ISwapRouter {
         address tokenOut;
         uint24 fee;
         address recipient;
-        uint256 deadline;
         uint256 amountIn;
         uint256 amountOutMinimum;
         uint160 sqrtPriceLimitX96;
@@ -587,7 +586,7 @@ contract DXNForge is Ownable, ReentrancyGuard, IBurnRedeemable {
         IERC20(WETH).approve(address(ROUTER), toBurn);
 
         uint256 dxn = ROUTER.exactInputSingle(
-            ISwapRouter.ExactInputSingleParams(WETH, address(DXN), fee, address(this), block.timestamp, toBurn, minOut, 0)
+            ISwapRouter.ExactInputSingleParams(WETH, address(DXN), fee, address(this), toBurn, minOut, 0)
         );
         DXN.safeTransfer(DEAD, dxn);
 
