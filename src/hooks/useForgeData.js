@@ -6,6 +6,8 @@ const V3_FACTORY = "0x0227628f3F023bb0B980b67D528571c95c6DaC1c";
 const FALLBACK_POLL_MS = 60000;
 
 let prevDxnPrice = 0;
+let lastPriceChange = 0;
+let cachedPoolAddr = null;
 
 export function useForgeData(chain, account, provider) {
   const [data, setData] = useState(null);
@@ -67,10 +69,13 @@ export function useForgeData(chain, account, provider) {
       let dxnPrice = 0;
       if (chain.dxn && chain.weth) {
         try {
-          const factory = new Contract(V3_FACTORY, FACTORY_ABI, rpc);
-          const poolAddr = await factory.getPool(chain.dxn, chain.weth, 10000);
-          if (poolAddr && poolAddr !== "0x0000000000000000000000000000000000000000") {
-            const pool = new Contract(poolAddr, POOL_ABI, rpc);
+          // Cache pool address to save RPC calls
+          if (!cachedPoolAddr) {
+            const factory = new Contract(V3_FACTORY, FACTORY_ABI, rpc);
+            cachedPoolAddr = await factory.getPool(chain.dxn, chain.weth, 10000);
+          }
+          if (cachedPoolAddr && cachedPoolAddr !== "0x0000000000000000000000000000000000000000") {
+            const pool = new Contract(cachedPoolAddr, POOL_ABI, rpc);
             const [slot0, token0] = await Promise.all([pool.slot0(), pool.token0()]);
             const sqrtPriceX96 = slot0[0];
             const price = Number(sqrtPriceX96) ** 2 / (2 ** 192);
@@ -82,12 +87,16 @@ export function useForgeData(chain, account, provider) {
         }
       }
 
-      const priceChange = prevDxnPrice > 0 ? ((dxnPrice - prevDxnPrice) / prevDxnPrice) * 100 : 0;
+      // Persist last non-zero price change
+      if (prevDxnPrice > 0) {
+        const change = ((dxnPrice - prevDxnPrice) / prevDxnPrice) * 100;
+        if (change !== 0) lastPriceChange = change;
+      }
       prevDxnPrice = dxnPrice;
 
       const result = {
         dxnPrice,
-        priceChange24h: priceChange,
+        priceChange24h: lastPriceChange,
         prevPrice: 0,
         totalDXNStaked,
         dxnSupply,

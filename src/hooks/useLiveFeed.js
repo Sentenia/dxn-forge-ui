@@ -35,6 +35,7 @@ export function useLiveFeed(chain) {
   }, [chain]);
 
   const loadRecent = useCallback(async () => {
+    console.log("[LiveFeed] refreshFeed called");
     const rpc = rpcRef.current;
     const forge = forgeRef.current;
     if (!rpc || !forge) return;
