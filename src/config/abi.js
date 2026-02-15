@@ -14,6 +14,13 @@ export const FORGE_ABI = [
   "function lastFeeTime() view returns (uint256)",
   "function feeInterval() view returns (uint256)",
   "function stakerTixEpoch() view returns (uint256)",
+  "function userTixEp(address) view returns (uint256)",
+  "function userTixDebt(address) view returns (uint256)",
+  "function userBurnTix(address, uint256) view returns (uint256)",
+  "function epDone(uint256) view returns (bool)",
+  "function epGold(uint256) view returns (uint256)",
+  "function epTix(uint256) view returns (uint256)",
+  "function epAcc(uint256) view returns (uint256)",
 
   // ── Write ──
   "function burnXEN(uint256 b) payable",

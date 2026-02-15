@@ -125,10 +125,43 @@ export function useForgeData(chain, account, provider) {
           rpc.getBalance(account),
         ]);
 
+        // Calculate projected GOLD (what _allocGold would give on next sync)
+        const userTixEp = Number(await forge.userTixEp(account));
+        const userTixDebt = await forge.userTixDebt(account);
+        const currentEp = Number(ps.epoch_);
+        const userWeight = us.userWt_;
+
+        let projectedGold = 0n;
+        let debt = userTixDebt;
+
+        for (let ep = userTixEp; ep < currentEp; ep++) {
+          const done = await forge.epDone(ep);
+          if (!done) continue;
+          const [gold, tix, acc, burnTix] = await Promise.all([
+            forge.epGold(ep),
+            forge.epTix(ep),
+            forge.epAcc(ep),
+            forge.userBurnTix(account, ep),
+          ]);
+
+          let stakerTix = 0n;
+          if (userWeight > 0n && acc > 0n) {
+            const owed = (userWeight * acc) / BigInt(1e18);
+            stakerTix = owed > debt ? owed - debt : 0n;
+          }
+          const totalTix = burnTix + stakerTix;
+          if (totalTix > 0n && tix > 0n) {
+            projectedGold += (totalTix * gold) / tix;
+          }
+          debt = 0n;
+        }
+
+        const projectedAutoGold = Number(formatEther(us.autoGold_ + projectedGold));
+
         result.userDXNStaked = Number(formatEther(us.dxnStaked_));
         result.userDXNFresh = Number(formatEther(us.dxnFresh_));
         result.userDXNRipe = Number(formatEther(us.dxnRipe_));
-        result.userAutoGold = Number(formatEther(us.autoGold_));
+        result.userAutoGold = projectedAutoGold;
         result.userManualGold = Number(formatEther(us.goldRipe_ + us.goldStaked_));
         result.userGoldFresh = Number(formatEther(us.goldFresh_));
         result.userGoldRipe = Number(formatEther(us.goldRipe_));
