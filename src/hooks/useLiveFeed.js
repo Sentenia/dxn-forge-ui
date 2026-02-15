@@ -46,7 +46,7 @@ export function useLiveFeed(chain) {
     const rpc = new JsonRpcProvider(chain.rpc);
     const forge = new Contract(chain.forge, FORGE_ABI, rpc);
 
-    // Fetch recent past events on load (last ~500 blocks)
+    // Fetch recent past events on load (last 10 blocks - Alchemy free tier limit)
     async function loadRecent() {
       try {
         const block = await rpc.getBlockNumber();
