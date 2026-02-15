@@ -4,7 +4,7 @@ import { CHAINS } from "../config/chains";
 import "./Header.css";
 
 const CHAIN_LIST = Object.entries(CHAINS)
-  .filter(([, c]) => c.rpc)
+  .filter(([, c]) => c.forge && c.forge !== "")
   .map(([id, c]) => ({ id: Number(id), name: c.name, short: c.short, color: c.color || "#888" }));
 
 function fmt(n, decimals = 2) {
@@ -20,9 +20,33 @@ export default function Header({ data, wallet, actions }) {
   const [chainOpen, setChainOpen] = useState(false);
   const [walletOpen, setWalletOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [toast, setToast] = useState(null);
   const chainRef = useRef(null);
   const walletRef = useRef(null);
   const prevPrice = useRef(data?.dxnPrice);
+
+  const showToast = (msg, type) => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 5000);
+  };
+
+  const handleFaucetDXN = async () => {
+    const result = await actions?.faucetDXN();
+    if (result?.success) {
+      showToast(`${wallet.chain?.dxnName || "DXN"} claimed!`, "success");
+    } else if (result?.error) {
+      showToast(result.error, "error");
+    }
+  };
+
+  const handleFaucetXEN = async () => {
+    const result = await actions?.faucetXEN();
+    if (result?.success) {
+      showToast(`${wallet.chain?.xenName || "XEN"} claimed!`, "success");
+    } else if (result?.error) {
+      showToast(result.error, "error");
+    }
+  };
 
   const currentChain = CHAIN_LIST.find((c) => c.id === wallet.chainId) || CHAIN_LIST[0];
 
@@ -183,11 +207,12 @@ export default function Header({ data, wallet, actions }) {
         )}
       </div>
     </header>
-    {(wallet.chainId === 11155111 || wallet.chainId === 31337) && (
+    {wallet.chainId === 11155111 && (
       <div className="testnet-bar">
         <span className="testnet-label">TESTNET</span>
-        <button className="faucet-btn" onClick={actions?.faucetDXN}>Get {wallet.chain?.dxnName || "DXN"}</button>
-        <button className="faucet-btn" onClick={actions?.faucetXEN}>Get {wallet.chain?.xenName || "XEN"}</button>
+        <button className="faucet-btn" onClick={handleFaucetDXN}>Get {wallet.chain?.dxnName || "DXN"}</button>
+        <button className="faucet-btn" onClick={handleFaucetXEN}>Get {wallet.chain?.xenName || "XEN"}</button>
+        {toast && <div className={`faucet-toast ${toast.type}`}>{toast.msg}</div>}
         <a className="faucet-btn faucet-link" href="https://faucets.chain.link/sepolia" target="_blank" rel="noopener noreferrer">Get Sepolia ETH</a>
       </div>
     )}

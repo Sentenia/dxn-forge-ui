@@ -27,14 +27,6 @@ const sepolia = {
   blockExplorers: { default: { name: "Etherscan", url: "https://sepolia.etherscan.io" } },
 };
 
-const localhost = {
-  id: 31337,
-  name: "Localhost",
-  nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
-  rpcUrls: { default: { http: ["http://127.0.0.1:8545"] } },
-  blockExplorers: { default: { name: "", url: "" } },
-};
-
 export const appKit = createAppKit({
   adapters: [new EthersAdapter()],
   networks: [sepolia, mainnet, optimism, base, polygon, avalanche, bsc, pulsechain],

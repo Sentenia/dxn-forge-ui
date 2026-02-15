@@ -109,17 +109,55 @@ export function useForgeActions(chain, signer, refetch, feedRefresh) {
   }
 
   async function faucetDXN() {
-    const dxn = new Contract(chain.dxn, FAUCET_ABI, signer);
-    const tx = await dxn.faucet();
-    await tx.wait();
-    refresh();
+    try {
+      const dxn = new Contract(chain.dxn, FAUCET_ABI, signer);
+      const addr = await signer.getAddress();
+      const lastClaim = await dxn.lastFaucet(addr);
+      const now = Math.floor(Date.now() / 1000);
+      const elapsed = now - Number(lastClaim);
+      if (elapsed < 86400 && Number(lastClaim) > 0) {
+        const remaining = 86400 - elapsed;
+        const hours = Math.floor(remaining / 3600);
+        const mins = Math.floor((remaining % 3600) / 60);
+        return { success: false, error: `Faucet on cooldown. Try again in ${hours}h ${mins}m.` };
+      }
+      const tx = await dxn.faucet();
+      await tx.wait();
+      refresh();
+      return { success: true };
+    } catch (err) {
+      const msg = err.message || "";
+      if (msg.includes("Wait 24h") || msg.includes("execution reverted")) {
+        return { success: false, error: "Faucet on cooldown. Try again in 24 hours." };
+      }
+      return { success: false, error: "Faucet failed: " + (err.reason || err.message).slice(0, 50) };
+    }
   }
 
   async function faucetXEN() {
-    const xen = new Contract(chain.xen, FAUCET_ABI, signer);
-    const tx = await xen.faucet();
-    await tx.wait();
-    refresh();
+    try {
+      const xen = new Contract(chain.xen, FAUCET_ABI, signer);
+      const addr = await signer.getAddress();
+      const lastClaim = await xen.lastFaucet(addr);
+      const now = Math.floor(Date.now() / 1000);
+      const elapsed = now - Number(lastClaim);
+      if (elapsed < 86400 && Number(lastClaim) > 0) {
+        const remaining = 86400 - elapsed;
+        const hours = Math.floor(remaining / 3600);
+        const mins = Math.floor((remaining % 3600) / 60);
+        return { success: false, error: `Faucet on cooldown. Try again in ${hours}h ${mins}m.` };
+      }
+      const tx = await xen.faucet();
+      await tx.wait();
+      refresh();
+      return { success: true };
+    } catch (err) {
+      const msg = err.message || "";
+      if (msg.includes("Wait 24h") || msg.includes("execution reverted")) {
+        return { success: false, error: "Faucet on cooldown. Try again in 24 hours." };
+      }
+      return { success: false, error: "Faucet failed: " + (err.reason || err.message).slice(0, 50) };
+    }
   }
 
   return { burnXEN, stakeDXN, unstakeDXN, stakeGold, unstakeGold, claimFees, buyAndBurn, claimRewards, claimEth, faucetDXN, faucetXEN };
