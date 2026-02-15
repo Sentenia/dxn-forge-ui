@@ -7,8 +7,8 @@ const projectId = import.meta.env.VITE_REOWN_PROJECT_ID;
 const metadata = {
   name: "DXN Forge",
   description: "Burn XEN. Stake DXN. Earn GOLD.",
-  url: "https://dxnforge.com",
-  icons: ["https://dxnforge.com/icon.png"],
+  url: "https://www.dxnforge.com",
+  icons: ["https://www.dxnforge.com/icon.png"],
 };
 
 const pulsechain = {
@@ -37,8 +37,8 @@ const localhost = {
 
 export const appKit = createAppKit({
   adapters: [new EthersAdapter()],
-  networks: [localhost, optimism, base, polygon, avalanche, bsc, pulsechain, sepolia],
-  defaultNetwork: localhost,
+  networks: [sepolia, mainnet, optimism, base, polygon, avalanche, bsc, pulsechain],
+  defaultNetwork: sepolia,
   projectId,
   metadata,
   themeMode: "dark",
