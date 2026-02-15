@@ -62,3 +62,13 @@ export const FAUCET_ABI = [
   "function faucet()",
   "function lastFaucet(address) view returns (uint256)",
 ];
+
+export const POOL_ABI = [
+  "function slot0() view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)",
+  "function token0() view returns (address)",
+  "function token1() view returns (address)",
+];
+
+export const FACTORY_ABI = [
+  "function getPool(address, address, uint24) view returns (address)",
+];

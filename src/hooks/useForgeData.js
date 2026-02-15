@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Contract, JsonRpcProvider, formatEther } from "ethers";
-import { FORGE_ABI, ERC20_ABI } from "../config/abi";
+import { FORGE_ABI, ERC20_ABI, POOL_ABI, FACTORY_ABI } from "../config/abi";
 
-const POLL_MS = 5000;
+const V3_FACTORY = "0x0227628f3F023bb0B980b67D528571c95c6DaC1c";
+
+const FALLBACK_POLL_MS = 60000;
 
 export function useForgeData(chain, account, provider) {
   const [data, setData] = useState(null);
@@ -60,8 +62,27 @@ export function useForgeData(chain, account, provider) {
 
       let dbxenETH = 0;
 
+      // Fetch DXN price from Uniswap V3 pool
+      let dxnPrice = 0;
+      if (chain.dxn && chain.weth) {
+        try {
+          const factory = new Contract(V3_FACTORY, FACTORY_ABI, rpc);
+          const poolAddr = await factory.getPool(chain.dxn, chain.weth, 10000);
+          if (poolAddr && poolAddr !== "0x0000000000000000000000000000000000000000") {
+            const pool = new Contract(poolAddr, POOL_ABI, rpc);
+            const [slot0, token0] = await Promise.all([pool.slot0(), pool.token0()]);
+            const sqrtPriceX96 = slot0[0];
+            const price = Number(sqrtPriceX96) ** 2 / (2 ** 192);
+            const isToken0DXN = token0.toLowerCase() === chain.dxn.toLowerCase();
+            dxnPrice = isToken0DXN ? price : 1 / price;
+          }
+        } catch (err) {
+          console.warn("Failed to fetch DXN price:", err.message);
+        }
+      }
+
       const result = {
-        dxnPrice: 0,
+        dxnPrice,
         priceChange24h: 0,
         prevPrice: 0,
         totalDXNStaked,
@@ -126,34 +147,48 @@ export function useForgeData(chain, account, provider) {
         ]);
 
         // Calculate projected GOLD (what _allocGold would give on next sync)
-        const userTixEp = Number(await forge.userTixEp(account));
-        const userTixDebt = await forge.userTixDebt(account);
+        const [userTixEpRaw, userTixDebt] = await Promise.all([
+          forge.userTixEp(account),
+          forge.userTixDebt(account),
+        ]);
+        const userTixEp = Number(userTixEpRaw);
         const currentEp = Number(ps.epoch_);
         const userWeight = us.userWt_;
 
         let projectedGold = 0n;
-        let debt = userTixDebt;
+        const epochCount = currentEp - userTixEp;
 
-        for (let ep = userTixEp; ep < currentEp; ep++) {
-          const done = await forge.epDone(ep);
-          if (!done) continue;
-          const [gold, tix, acc, burnTix] = await Promise.all([
-            forge.epGold(ep),
-            forge.epTix(ep),
-            forge.epAcc(ep),
-            forge.userBurnTix(account, ep),
-          ]);
+        if (epochCount > 0 && epochCount <= 10) {
+          // Batch all epoch reads in one Promise.all
+          const epochs = [];
+          for (let ep = userTixEp; ep < currentEp; ep++) epochs.push(ep);
 
-          let stakerTix = 0n;
-          if (userWeight > 0n && acc > 0n) {
-            const owed = (userWeight * acc) / BigInt(1e18);
-            stakerTix = owed > debt ? owed - debt : 0n;
+          const epochData = await Promise.all(
+            epochs.map(ep => Promise.all([
+              forge.epDone(ep),
+              forge.epGold(ep),
+              forge.epTix(ep),
+              forge.epAcc(ep),
+              forge.userBurnTix(account, ep),
+            ]))
+          );
+
+          let debt = userTixDebt;
+          for (let i = 0; i < epochData.length; i++) {
+            const [done, gold, tix, acc, burnTix] = epochData[i];
+            if (!done) continue;
+
+            let stakerTix = 0n;
+            if (userWeight > 0n && acc > 0n) {
+              const owed = (userWeight * acc) / BigInt(1e18);
+              stakerTix = owed > debt ? owed - debt : 0n;
+            }
+            const totalTix = burnTix + stakerTix;
+            if (totalTix > 0n && tix > 0n) {
+              projectedGold += (totalTix * gold) / tix;
+            }
+            debt = 0n;
           }
-          const totalTix = burnTix + stakerTix;
-          if (totalTix > 0n && tix > 0n) {
-            projectedGold += (totalTix * gold) / tix;
-          }
-          debt = 0n;
         }
 
         const projectedAutoGold = Number(formatEther(us.autoGold_ + projectedGold));
@@ -186,12 +221,10 @@ export function useForgeData(chain, account, provider) {
     }
   }, [chain, account]);
 
+  // Initial fetch on mount + slow 60s fallback for external changes
   useEffect(() => {
     fetchData();
-    const delay = errorCount.current > 0
-      ? Math.min(POLL_MS * Math.pow(2, errorCount.current), 60000)
-      : POLL_MS;
-    const iv = setInterval(fetchData, delay);
+    const iv = setInterval(fetchData, FALLBACK_POLL_MS);
     return () => clearInterval(iv);
   }, [fetchData]);
 

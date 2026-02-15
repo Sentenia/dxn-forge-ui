@@ -1,9 +1,14 @@
 import { Contract, parseEther } from "ethers";
 import { FORGE_ABI, ERC20_ABI, FAUCET_ABI } from "../config/abi";
 
-export function useForgeActions(chain, signer, refetch) {
+export function useForgeActions(chain, signer, refetch, feedRefresh) {
   const noop = async () => {};
-  
+
+  const refresh = () => {
+    refetch();
+    if (feedRefresh) feedRefresh();
+  };
+
   if (!chain || !chain.forge || !signer) {
     return {
       burnXEN: noop,
@@ -34,7 +39,7 @@ export function useForgeActions(chain, signer, refetch) {
     }
     const tx = await forge.burnXEN(batches, { value: fee });
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function stakeDXN(amount) {
@@ -48,13 +53,13 @@ export function useForgeActions(chain, signer, refetch) {
     }
     const tx = await forge.stakeDXN(amt);
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function unstakeDXN(amount) {
     const tx = await forge.unstakeDXN(parseEther(amount));
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function stakeGold(amount) {
@@ -68,19 +73,19 @@ export function useForgeActions(chain, signer, refetch) {
     }
     const tx = await forge.stakeGold(amt);
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function unstakeGold(amount) {
     const tx = await forge.unstakeGold(parseEther(amount));
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function claimFees() {
     const tx = await forge.claimFees();
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function buyAndBurn(minOut, poolFee) {
@@ -88,33 +93,33 @@ export function useForgeActions(chain, signer, refetch) {
     poolFee = poolFee || 10000;
     const tx = await forge.claimAndBurn(minOut, poolFee);
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function claimRewards() {
     const tx = await forge.claimRewards();
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function claimEth() {
     const tx = await forge.claimEth();
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function faucetDXN() {
     const dxn = new Contract(chain.dxn, FAUCET_ABI, signer);
     const tx = await dxn.faucet();
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   async function faucetXEN() {
     const xen = new Contract(chain.xen, FAUCET_ABI, signer);
     const tx = await xen.faucet();
     await tx.wait();
-    refetch();
+    refresh();
   }
 
   return { burnXEN, stakeDXN, unstakeDXN, stakeGold, unstakeGold, claimFees, buyAndBurn, claimRewards, claimEth, faucetDXN, faucetXEN };

@@ -15,8 +15,8 @@ import "./App.css";
 function App() {
   const wallet = useWallet();
   const { data: liveData, loading, refetch } = useForgeData(wallet.chain, wallet.account, wallet.provider);
-  const actions = useForgeActions(wallet.chain, wallet.signer, refetch);
-  const feed = useLiveFeed(wallet.chain);
+  const { feed, refreshFeed } = useLiveFeed(wallet.chain);
+  const actions = useForgeActions(wallet.chain, wallet.signer, refetch, refreshFeed);
   const mockData = useMockData();
 
   // Use live data if available, fall back to mock

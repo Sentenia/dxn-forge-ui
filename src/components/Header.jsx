@@ -70,10 +70,12 @@ export default function Header({ data, wallet, actions }) {
       </div>
       <div className="price-box">
         <span className="price-label">{wallet.chain?.dxnName || "DXN"}</span>
-        <span className={`price-value ${flash}`}>${(data?.dxnPrice ?? 0).toFixed(4)}</span>
-        <span className="price-change" style={{ color: (data?.priceChange24h ?? 0) >= 0 ? "#00ff88" : "#ff4444" }}>
-          {(data?.priceChange24h ?? 0) >= 0 ? "\u25B2" : "\u25BC"} {Math.abs(data?.priceChange24h ?? 0).toFixed(1)}%
-        </span>
+        <span className={`price-value ${flash}`}>{(data?.dxnPrice ?? 0).toFixed(6)} ETH</span>
+        {(data?.priceChange24h ?? 0) !== 0 && (
+          <span className="price-change" style={{ color: (data?.priceChange24h ?? 0) >= 0 ? "#00ff88" : "#ff4444" }}>
+            {(data?.priceChange24h ?? 0) >= 0 ? "\u25B2" : "\u25BC"} {Math.abs(data?.priceChange24h ?? 0).toFixed(1)}%
+          </span>
+        )}
       </div>
       <div className="header-right">
         <div className="chain-selector" ref={chainRef}>
