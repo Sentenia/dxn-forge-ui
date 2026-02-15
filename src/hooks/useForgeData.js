@@ -3,8 +3,9 @@ import { Contract, JsonRpcProvider, formatEther } from "ethers";
 import { FORGE_ABI, ERC20_ABI, POOL_ABI, FACTORY_ABI } from "../config/abi";
 
 const V3_FACTORY = "0x0227628f3F023bb0B980b67D528571c95c6DaC1c";
-
 const FALLBACK_POLL_MS = 60000;
+
+let prevDxnPrice = 0;
 
 export function useForgeData(chain, account, provider) {
   const [data, setData] = useState(null);
@@ -81,9 +82,12 @@ export function useForgeData(chain, account, provider) {
         }
       }
 
+      const priceChange = prevDxnPrice > 0 ? ((dxnPrice - prevDxnPrice) / prevDxnPrice) * 100 : 0;
+      prevDxnPrice = dxnPrice;
+
       const result = {
         dxnPrice,
-        priceChange24h: 0,
+        priceChange24h: priceChange,
         prevPrice: 0,
         totalDXNStaked,
         dxnSupply,
