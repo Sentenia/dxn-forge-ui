@@ -18,6 +18,8 @@ export function useForgeData(chain, account, provider) {
 
       const ps = await forge.getProtocolStats();
       const stakerTixRaw = await forge.stakerTixEpoch();
+      const goldContract = new Contract(chain.gold, ["function totalSupply() view returns (uint256)"], rpc);
+      const goldSupply = await goldContract.totalSupply();
       const stakerTixActual = Number(formatEther(stakerTixRaw));
       const projectedStakerTix = Number(ps.mult_) / 100;
 
@@ -86,7 +88,8 @@ export function useForgeData(chain, account, provider) {
         stakerTickets: stakerTixActual + projectedStakerTix,
         burnerTickets: Number(formatEther(ps.tixEpoch_)) - stakerTixActual,
         tixEpoch: Number(formatEther(ps.tixEpoch_)),
-        totalGoldMinted: Number(formatEther(ps.totAutoGold_ + ps.goldFresh_ + ps.goldRipe_ + ps.goldStaked_ + ps.globalLtsGold_)),
+        totalGoldMinted: Number(formatEther(goldSupply)),
+        totalGoldAllocated: Number(formatEther(ps.totAutoGold_ + ps.goldFresh_ + ps.goldRipe_ + ps.goldStaked_ + ps.globalLtsGold_)),
         totalETHDistributed: Number(formatEther(ps.goldEthReserve_)),
         totalDXNBurned: Number(formatEther(ps.pendingBurn_)),
         totalGoldStaked: Number(formatEther(ps.totAutoGold_ + ps.goldRipe_ + ps.goldStaked_ + ps.globalLtsGold_)),
