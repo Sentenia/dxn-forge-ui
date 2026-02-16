@@ -74,6 +74,7 @@ body { background:#08080c; color:#e0e0e0; font-family:"Outfit",sans-serif; -webk
 }
 
 /* Mobile backdrop for panels */
+/* Mobile backdrop for panels - only visible on mobile/tablet */
 .panel-backdrop {
   display: none;
   position: fixed;
@@ -86,10 +87,10 @@ body { background:#08080c; color:#e0e0e0; font-family:"Outfit",sans-serif; -webk
   transition: opacity 0.3s;
 }
 
-.panel-backdrop.active {
-  display: block;
-  opacity: 1;
-  pointer-events: auto;
+@media (min-width: 1025px) {
+  .panel-backdrop {
+    display: none !important;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -99,6 +100,11 @@ body { background:#08080c; color:#e0e0e0; font-family:"Outfit",sans-serif; -webk
 
   .panel-backdrop {
     display: block;
+  }
+
+  .panel-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
