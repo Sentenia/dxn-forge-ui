@@ -4,8 +4,13 @@ import { CHAINS } from "../config/chains";
 import "./Header.css";
 
 const CHAIN_LIST = Object.entries(CHAINS)
-  .filter(([, c]) => c.forge && c.forge !== "")
-  .map(([id, c]) => ({ id: Number(id), name: c.name, short: c.short, color: c.color || "#888" }));
+  .map(([id, c]) => ({
+    id: Number(id),
+    name: c.name,
+    short: c.short,
+    color: c.color || "#888",
+    hasForge: !!(c.forge && c.forge !== ""),
+  }));
 
 function fmt(n, decimals = 2) {
   if (n >= 1e12) return (n / 1e12).toFixed(1) + "T";
@@ -116,8 +121,9 @@ export default function Header({ data, wallet, actions, onMenuToggle }) {
               {CHAIN_LIST.map((c) => (
                 <button
                   key={c.id}
-                  className={`chain-option ${c.id === currentChain.id ? "chain-active" : ""}`}
-                  onClick={() => { wallet.switchChain(c.id); setChainOpen(false); }}
+                  className={`chain-option ${c.id === currentChain.id ? "chain-active" : ""} ${!c.hasForge ? "coming-soon" : ""}`}
+                  onClick={() => { if (c.hasForge) { wallet.switchChain(c.id); setChainOpen(false); } }}
+                  disabled={!c.hasForge}
                 >
                   <span className="chain-dot" style={{ background: c.color }} />
                   <span>{c.name}</span>
