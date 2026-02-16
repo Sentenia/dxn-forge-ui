@@ -127,7 +127,7 @@
   border-left-color: #ff9d00;
 }
 
-/* Mobile styles */
+/* Tablet styles */
 @media (max-width: 1024px) {
   .collapsible-nav {
     position: fixed;
@@ -139,20 +139,40 @@
     z-index: 100;
   }
 
-  .collapsible-nav:not(.nav-collapsed) {
-    transform: translateX(0);
+  .collapsible-nav.nav-collapsed {
+    transform: translateX(-100%);
   }
 
-  .collapsible-nav.nav-collapsed {
+  .collapsible-nav.nav-open {
     transform: translateX(0);
-    width: 48px;
-    min-width: 48px;
   }
 }
 
+/* Mobile styles - nav completely hidden, slides in as overlay */
 @media (max-width: 768px) {
-  .collapsible-nav:not(.nav-collapsed) {
-    width: 100%;
-    min-width: 100%;
+  .collapsible-nav {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    width: 260px;
+    min-width: 260px;
+    height: calc(100vh - 60px);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    background: #1a1a1a;
+  }
+
+  .collapsible-nav.nav-collapsed {
+    transform: translateX(-100%);
+  }
+
+  .collapsible-nav.nav-open {
+    transform: translateX(0);
+  }
+
+  .nav-toggle {
+    display: none;
   }
 }

@@ -76,28 +76,29 @@ body { background:#08080c; color:#e0e0e0; font-family:"Outfit",sans-serif; -webk
 /* Mobile backdrop for panels */
 .panel-backdrop {
   display: none;
+  position: fixed;
+  inset: 0;
+  top: 60px;
+  background: rgba(0,0,0,0.7);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.panel-backdrop.active {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (max-width: 1024px) {
   .app-layout {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr;
   }
 
   .panel-backdrop {
     display: block;
-    position: fixed;
-    inset: 0;
-    top: 60px;
-    background: rgba(0,0,0,0.6);
-    z-index: 90;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-
-  .panel-backdrop.active {
-    opacity: 1;
-    pointer-events: auto;
   }
 }
 

@@ -1,5 +1,5 @@
 ﻿import { useEffect, useRef, useState } from "react";
-import { Hammer, ChevronDown, Wallet, Copy, ExternalLink } from "lucide-react";
+import { Hammer, ChevronDown, Wallet, Copy, ExternalLink, Menu } from "lucide-react";
 import { CHAINS } from "../config/chains";
 import "./Header.css";
 
@@ -15,7 +15,7 @@ function fmt(n, decimals = 2) {
   return n.toFixed(decimals);
 }
 
-export default function Header({ data, wallet, actions }) {
+export default function Header({ data, wallet, actions, onMenuToggle }) {
   const [flash, setFlash] = useState("");
   const [chainOpen, setChainOpen] = useState(false);
   const [walletOpen, setWalletOpen] = useState(false);
@@ -87,6 +87,9 @@ export default function Header({ data, wallet, actions }) {
     <>
     <header className="header">
       <div className="header-left">
+        <button className="mobile-menu-btn" onClick={onMenuToggle} title="Menu">
+          <Menu size={22} />
+        </button>
         <div className="logo">
           <Hammer size={26} color="#ff9d00" />
           <span className="logo-text">DXN FORGE</span>

@@ -9,7 +9,7 @@ const ICONS = {
   book: BookOpen,
 };
 
-export default function CollapsibleNav({ activeExplainer, setActiveExplainer }) {
+export default function CollapsibleNav({ activeExplainer, setActiveExplainer, isOpen, onClose }) {
   const [collapsed, setCollapsed] = useState(() => {
     const stored = localStorage.getItem("navCollapsed");
     return stored ? JSON.parse(stored) : false;
@@ -38,10 +38,11 @@ export default function CollapsibleNav({ activeExplainer, setActiveExplainer }) 
 
   const handleItemClick = (itemId) => {
     setActiveExplainer(itemId);
+    if (onClose) onClose();
   };
 
   return (
-    <nav className={`collapsible-nav ${collapsed ? "nav-collapsed" : ""}`}>
+    <nav className={`collapsible-nav ${collapsed ? "nav-collapsed" : ""} ${isOpen ? "nav-open" : ""}`}>
       <button className="nav-toggle" onClick={() => setCollapsed(!collapsed)} title={collapsed ? "Expand menu" : "Collapse menu"}>
         {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>

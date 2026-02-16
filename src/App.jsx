@@ -17,6 +17,7 @@ import "./App.css";
 
 function App() {
   const [activeExplainer, setActiveExplainer] = useState(null);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const wallet = useWallet();
   const { data: liveData, loading, refetch } = useForgeData(wallet.chain, wallet.account, wallet.provider);
@@ -27,11 +28,26 @@ function App() {
   // Use live data if available, fall back to mock
   const data = liveData || mockData;
 
+  const handleMenuToggle = () => setMobileNavOpen(!mobileNavOpen);
+  const closeMobileNav = () => setMobileNavOpen(false);
+  const closeContextPanel = () => setActiveExplainer(null);
+
+  const showBackdrop = mobileNavOpen || activeExplainer;
+
   return (
     <div className="app">
-      <Header data={data} wallet={wallet} actions={actions} />
+      <Header data={data} wallet={wallet} actions={actions} onMenuToggle={handleMenuToggle} />
       <div className="app-layout">
-        <CollapsibleNav activeExplainer={activeExplainer} setActiveExplainer={setActiveExplainer} />
+        <CollapsibleNav
+          activeExplainer={activeExplainer}
+          setActiveExplainer={setActiveExplainer}
+          isOpen={mobileNavOpen}
+          onClose={closeMobileNav}
+        />
+        <div
+          className={`panel-backdrop ${showBackdrop ? "active" : ""}`}
+          onClick={() => { closeMobileNav(); closeContextPanel(); }}
+        />
         <main className="app-main">
           <CountdownBar data={data} actions={actions} wallet={wallet} setActiveExplainer={setActiveExplainer} />
           <WarBar data={data} setActiveExplainer={setActiveExplainer} />

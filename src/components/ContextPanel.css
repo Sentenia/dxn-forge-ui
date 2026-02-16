@@ -156,7 +156,7 @@
   box-shadow: 0 0 20px rgba(255,157,0,0.15);
 }
 
-/* Mobile styles */
+/* Tablet and mobile styles */
 @media (max-width: 1024px) {
   .context-panel {
     position: fixed;
@@ -172,5 +172,18 @@
   .context-panel {
     width: 100%;
     min-width: 100%;
+    border-left: none;
+  }
+
+  .context-header {
+    padding: 20px;
+  }
+
+  .context-body {
+    padding: 20px;
+  }
+
+  .context-footer {
+    padding: 20px;
   }
 }
