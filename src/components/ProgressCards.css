@@ -1,31 +1,73 @@
-﻿.dual-progress { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 28px 20px; max-width:900px; margin:0 auto; }
+.dual-progress { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 28px 20px; max-width:900px; margin:0 auto; }
 .progress-card { background:rgba(255,255,255,0.02); border-radius:14px; padding:20px 22px; position:relative; }
 .staker-card { border:1px solid rgba(255,157,0,0.15); }
 .burner-card { border:1px solid rgba(220,50,50,0.2); }
-.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.progress-title { font-size:14px; font-weight:700; color:#aaa; letter-spacing:0.08em; }
-.progress-badge { font-size:14px; font-weight:700; padding:3px 12px; border-radius:20px; font-family:"JetBrains Mono",monospace; }
+.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.progress-title { font-size:13px; font-weight:700; color:#aaa; letter-spacing:0.08em; }
+.progress-badge { font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px; font-family:"JetBrains Mono",monospace; }
 .staker-badge { background:rgba(255,157,0,0.15); color:#ffb700; }
 .burner-badge { background:rgba(220,50,50,0.15); color:#ff6644; }
-.progress-big-num { font-size:38px; font-weight:800; font-family:"JetBrains Mono",monospace; line-height:1.1; }
+
+/* Ecosystem breakdown */
+.eco-breakdown { background:rgba(0,0,0,0.2); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+.eco-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; }
+.eco-label { font-size:13px; color:#888; font-weight:500; display:flex; align-items:center; gap:6px; }
+.eco-value { font-size:13px; font-family:"JetBrains Mono",monospace; font-weight:600; color:#ccc; }
+.eco-value.eco-dim { color:#555; }
+.eco-icon { vertical-align:middle; }
+.burn-icon { color:#ff6644; }
+.eco-divider { height:1px; background:rgba(255,255,255,0.1); margin:8px 0; }
+.eco-row.eco-total .eco-label { font-weight:700; color:#aaa; }
+.eco-row.eco-total .eco-value { font-size:15px; font-weight:700; }
+.eco-footnote { font-size:10px; color:#555; font-style:italic; margin-top:10px; text-align:center; }
+
 .staker-num { color:#ff9d00; }
 .burner-num { color:#ff6644; }
-.progress-sub { font-size:14px; color:#888; margin-top:4px; }
-.progress-supply { font-size:12px; color:#555; margin-top:2px; margin-bottom:14px; }
-.tier-track { height:6px; border-radius:3px; overflow:hidden; margin-bottom:16px; }
-.staker-track { background:rgba(255,157,0,0.1); }
-.burner-track { background:rgba(220,50,50,0.1); }
-.tier-fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
-.staker-fill { background:linear-gradient(90deg,#ff9d00,#ffb700); }
-.burner-fill { background:linear-gradient(90deg,#ff4444,#ff6644); }
-.progress-summary { background:rgba(0,0,0,0.3); border-radius:10px; padding:14px 16px; }
+.burn-color { color:#ff6644; }
+.gold-color { color:#ffb700; }
+.green-color { color:#00ff88; }
+
+/* Progress bar with labels */
+.progress-bar-container { margin-top:14px; margin-bottom:8px; }
+.progress-bar-track { height:8px; border-radius:4px; overflow:hidden; background:rgba(255,255,255,0.06); }
+.progress-bar-track.staker-track { background:rgba(255,157,0,0.1); }
+.progress-bar-track.burner-track { background:rgba(220,50,50,0.1); }
+.progress-bar-fill { height:100%; border-radius:4px; transition:width 0.5s ease; min-width:2px; }
+.progress-bar-fill.staker-fill { background:linear-gradient(90deg,#ff9d00,#ffb700); box-shadow:0 0 10px rgba(255,157,0,0.4); }
+.progress-bar-fill.burner-fill { background:linear-gradient(90deg,#ff4444,#ff6644); box-shadow:0 0 10px rgba(255,68,68,0.4); }
+.progress-bar-labels { display:flex; justify-content:space-between; margin-top:6px; }
+.progress-bar-left { font-size:11px; color:#888; font-family:"JetBrains Mono",monospace; }
+.progress-bar-right { font-size:11px; color:#555; font-family:"JetBrains Mono",monospace; }
+
+/* Summary box */
+.progress-summary { background:rgba(0,0,0,0.3); border-radius:10px; padding:12px 14px; }
 .staker-summary { border:1px solid rgba(255,157,0,0.1); }
 .burner-summary { border:1px solid rgba(220,50,50,0.1); }
-.summary-row { display:flex; justify-content:space-between; padding:6px 0; font-size:16px; }
+.summary-row { display:flex; justify-content:space-between; padding:4px 0; font-size:14px; }
 .summary-label { color:#888; font-weight:600; }
-.summary-value { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:18px; }
-.summary-note { font-size:12px; color:#555; margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06); }
+.summary-value { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:14px; }
+.summary-note { font-size:11px; color:#555; margin-top:8px; padding-top:0; text-align:center; }
+
+/* Your Impact section */
+.your-impact { margin:0 28px 20px; padding:16px 20px; background:rgba(0,0,0,0.3); border-radius:12px; border-left:3px solid #ff9d00; max-width:900px; margin-left:auto; margin-right:auto; }
+.impact-header { font-size:12px; font-weight:700; letter-spacing:0.1em; color:#ff9d00; margin-bottom:12px; }
+.impact-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+.impact-item { display:flex; flex-direction:column; gap:2px; }
+.impact-label { font-size:12px; color:#666; font-weight:500; }
+.impact-value { font-size:18px; font-family:"JetBrains Mono",monospace; font-weight:700; }
+.impact-sub { font-size:11px; color:#555; }
+
+@media (max-width: 900px) {
+  .impact-grid { grid-template-columns:repeat(2, 1fr); }
+}
 
 @media (max-width: 640px) {
   .dual-progress { grid-template-columns:1fr; padding:0 16px 16px; }
+  .your-impact { margin:0 16px 16px; padding:14px 16px; }
+  .impact-grid { grid-template-columns:1fr 1fr; gap:12px; }
+  .impact-value { font-size:16px; }
+  .eco-breakdown { padding:10px 12px; }
+  .eco-row { padding:4px 0; }
+  .eco-label { font-size:12px; }
+  .eco-value { font-size:12px; }
 }

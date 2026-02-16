@@ -8,13 +8,20 @@ export const CHAINS = {
     gasName: "ETH",
     rpc: import.meta.env.VITE_ETH_RPC || "",
     forge: "",
-    dxn: "",
-    xen: "",
+    dxn: "0x80f0C1c49891dcFDD40b6e0F960F84E6042bcB6F",
+    xen: "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8",
     gold: "",
-    dbxen: "",
-    weth: "",
+    dbxen: "0xF5c80c305803280B587F8cabBcCdC4d9BF522AbD",
+    weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     router: "",
     explorer: "https://etherscan.io",
+    ecosystem: {
+      nxdContract: "0x70536D44820fE3ddd4A2e3eEdbC937b8B9D566C7",
+      deadAddress: "0x000000000000000000000000000000000000dEaD",
+      // All non-Forge XEN burns combined (from XENTurbo.io, Feb 2026)
+      otherProtocolsBurned: "9508907385853",  // 9.5T XEN
+      lastUpdated: "2026-02-16",
+    },
   },
   11155111: {
     name: "Sepolia",
@@ -32,6 +39,9 @@ export const CHAINS = {
     weth: "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
     router: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     explorer: "https://sepolia.etherscan.io",
+    ecosystem: {
+      nxdLockedDxn: 0n,
+    },
   },
   10: {
     name: "Optimism",

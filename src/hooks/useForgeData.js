@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Contract, JsonRpcProvider, formatEther } from "ethers";
-import { FORGE_ABI, ERC20_ABI, POOL_ABI, FACTORY_ABI } from "../config/abi";
+import { FORGE_ABI, ERC20_ABI, POOL_ABI, FACTORY_ABI, DBXEN_ABI } from "../config/abi";
 
 const V3_FACTORY = "0x0227628f3F023bb0B980b67D528571c95c6DaC1c";
 const FALLBACK_POLL_MS = 60000;
@@ -39,10 +39,10 @@ export function useForgeData(chain, account, provider) {
       const feeInterval = Number(ps.feeInterval_);
 
       const multRaw = Number(ps.mult_);
-      const multDisplay = (multRaw / 100).toFixed(1);
+      const multDisplay = (multRaw / 100).toFixed(6);
 
       const globalDiscBps = Number(ps.globalDisc_);
-      const globalDiscPct = (globalDiscBps / 100).toFixed(2);
+      const globalDiscPct = (globalDiscBps / 100).toFixed(6);
 
       // JS-side community discount for better precision display
       let communityDiscPrecise = 0;
@@ -94,6 +94,38 @@ export function useForgeData(chain, account, provider) {
       }
       prevDxnPrice = dxnPrice;
 
+      // Read ecosystem data (DBXen burned XEN, DXN burned to dead address, etc.)
+      const DEAD_ADDRESS = "0x000000000000000000000000000000000000dEaD";
+
+      let dbxenBurnedXen = 0;
+      if (chain.dbxen) {
+        try {
+          const dbxen = new Contract(chain.dbxen, DBXEN_ABI, rpc);
+          const burned = await dbxen.totalXenBurned();
+          dbxenBurnedXen = Number(formatEther(burned));
+        } catch (e) {
+          // Mock or testnet may not have this function
+        }
+      }
+
+      // Read DXN burned (sent to dead address by buyAndBurn)
+      let dxnBurned = 0;
+      if (chain.dxn) {
+        try {
+          const dxnToken = new Contract(chain.dxn, ERC20_ABI, rpc);
+          const deadBalance = await dxnToken.balanceOf(DEAD_ADDRESS);
+          dxnBurned = Number(formatEther(deadBalance));
+        } catch (e) {
+          // Ignore if fails
+        }
+      }
+
+      const otherBurnedXen = chain.ecosystem?.otherBurnedXen ? Number(chain.ecosystem.otherBurnedXen) : 0;
+      const nxdLockedDxn = chain.ecosystem?.nxdLockedDxn ? Number(chain.ecosystem.nxdLockedDxn) : 0;
+      const totalEcosystemXenBurned = totalXENBurned + dbxenBurnedXen + otherBurnedXen;
+      const totalDxnPermanentlyRemoved = dxnBurned + nxdLockedDxn;
+      const dxnCirculating = dxnActualSupply - totalDxnPermanentlyRemoved;
+
       const result = {
         dxnPrice,
         priceChange24h: lastPriceChange,
@@ -127,6 +159,21 @@ export function useForgeData(chain, account, provider) {
         totalETHDistributed: Number(formatEther(ps.goldEthReserve_)),
         totalDXNBurned: Number(formatEther(ps.pendingBurn_)),
         totalGoldStaked: Number(formatEther(ps.totAutoGold_ + ps.goldRipe_ + ps.goldStaked_ + ps.globalLtsGold_)),
+
+        // Ecosystem data
+        dxnBurned,
+        dxnCirculating,
+        totalDxnPermanentlyRemoved,
+        ecosystem: {
+          forgeBurnedXen: totalXENBurned,
+          dbxenBurnedXen,
+          otherBurnedXen,
+          totalXenBurned: totalEcosystemXenBurned,
+          nxdLockedDxn,
+          dxnBurned,
+          forgeStakedDxn: totalDXNStaked,
+          totalDxnRemoved: totalDXNStaked + nxdLockedDxn,
+        },
 
         userDXNStaked: 0,
         userDXNFresh: 0,

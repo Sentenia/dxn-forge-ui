@@ -58,6 +58,10 @@ export const DBXEN_VIEWS_ABI = [
   "function pendingFees(address) view returns (uint256)",
 ];
 
+export const DBXEN_ABI = [
+  "function totalXenBurned() view returns (uint256)",
+];
+
 export const FAUCET_ABI = [
   "function faucet()",
   "function lastFaucet(address) view returns (uint256)",
