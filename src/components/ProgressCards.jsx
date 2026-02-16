@@ -1,4 +1,4 @@
-﻿import { Lock, Flame } from "lucide-react";
+﻿import { Lock, Flame, HelpCircle } from "lucide-react";
 import { fmtDxn, fmtXen } from "../utils/format";
 import "./ProgressCards.css";
 
@@ -10,7 +10,7 @@ function fmtDisc(n) {
   return "0.00";
 }
 
-export default function ProgressCards({ data, wallet }) {
+export default function ProgressCards({ data, wallet, setActiveExplainer }) {
   const dxnPct = data?.dxnStakedPct || 0;
   const xenPct = data?.xenBurnedPct || 0;
   const multDisplay = data?.multDisplay || "1.0";
@@ -19,6 +19,9 @@ export default function ProgressCards({ data, wallet }) {
   return (
     <div className="dual-progress">
       <div className="progress-card staker-card">
+        <button className="help-icon" onClick={() => setActiveExplainer?.("stakeDxn")} title="Learn about staking">
+          <HelpCircle size={12} />
+        </button>
         <div className="progress-header">
           <span className="progress-title"><Lock size={14} style={{display:"inline",verticalAlign:"middle",marginRight:4}} /> {wallet.chain?.dxnName || "DXN"} STAKED</span>
           <span className="progress-badge staker-badge">{multDisplay}x TICKETS</span>
@@ -43,6 +46,9 @@ export default function ProgressCards({ data, wallet }) {
       </div>
 
       <div className="progress-card burner-card">
+        <button className="help-icon" onClick={() => setActiveExplainer?.("burnXen")} title="Learn about burning">
+          <HelpCircle size={12} />
+        </button>
         <div className="progress-header">
           <span className="progress-title"><Flame size={14} style={{display:"inline",verticalAlign:"middle",marginRight:4}} /> {wallet.chain?.xenName || "XEN"} BURNED</span>
           <span className="progress-badge burner-badge">{discDisplay}% OFF</span>

@@ -1,9 +1,9 @@
 ﻿import { useState } from "react";
-import { Flame, Lock, Coins } from "lucide-react";
+import { Flame, Lock, Coins, HelpCircle } from "lucide-react";
 import { fmtXen, fmtDxn } from "../utils/format";
 import "./ActionZone.css";
 
-export default function ActionZone({ data, actions, wallet }) {
+export default function ActionZone({ data, actions, wallet, setActiveExplainer }) {
   const [tab, setTab] = useState("burn");
   const [batches, setBatches] = useState(100);
   const [stakeAmt, setStakeAmt] = useState("");
@@ -161,7 +161,12 @@ export default function ActionZone({ data, actions, wallet }) {
               >Unstake GOLD</button>
             </div>
             <div className="fee-divider" style={{margin:"16px 0"}} />
-            <div className="action-subtitle">Claim Rewards</div>
+            <div className="action-subtitle">
+              Claim Rewards
+              <button className="help-icon-inline" onClick={() => setActiveExplainer?.("claimRewards")} title="Learn about claiming">
+                <HelpCircle size={12} />
+              </button>
+            </div>
             <div className="action-desc">Claim GOLD + {wallet.chain?.gasName || "ETH"} withdraws ALL auto-staked GOLD to your wallet and claims {wallet.chain?.gasName || "ETH"} dividends. Claim {wallet.chain?.gasName || "ETH"} Only leaves GOLD staked.</div>
             <div className="secondary-row">
               <button

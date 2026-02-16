@@ -1,4 +1,5 @@
-﻿.countdown-bar { padding:14px 28px; background:linear-gradient(180deg,rgba(255,157,0,0.04) 0%,transparent 100%); border-bottom:1px solid rgba(255,255,255,0.04); }
+﻿.countdown-bar { padding:14px 28px; background:linear-gradient(180deg,rgba(255,157,0,0.04) 0%,transparent 100%); border-bottom:1px solid rgba(255,255,255,0.04); position:relative; }
+.countdown-help { top:14px; right:28px; }
 .countdown-inner { display:flex; align-items:center; gap:20px; max-width:900px; margin:0 auto; }
 .countdown-left { display:flex; flex-direction:column; gap:2px; min-width:160px; }
 .countdown-label { font-size:13px; font-weight:700; color:#888; letter-spacing:0.1em; }

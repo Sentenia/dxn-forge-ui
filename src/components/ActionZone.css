@@ -49,7 +49,9 @@
 .secondary-btn { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#aaa; font-size:14px; font-weight:600; cursor:pointer; font-family:"Outfit",sans-serif; transition:all 0.2s; }
 .secondary-btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); color:#fff; }
 .action-status { text-align:center; padding:8px 12px; margin-bottom:12px; border-radius:8px; background:rgba(255,157,0,0.1); border:1px solid rgba(255,157,0,0.2); color:#ff9d00; font-size:14px; font-weight:600; }
-.action-subtitle { font-size:16px; font-weight:700; color:#ffd700; margin-bottom:6px; }
+.action-subtitle { font-size:16px; font-weight:700; color:#ffd700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+.help-icon-inline { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:#666; cursor:pointer; transition:all 0.2s; }
+.help-icon-inline:hover { background:rgba(255,157,0,0.1); border-color:rgba(255,157,0,0.3); color:#ff9d00; }
 .claim-highlight { border-color:rgba(255,215,0,0.3) !important; color:#ffd700 !important; background:rgba(255,215,0,0.06) !important; }
 .claim-highlight:hover:not(:disabled) { background:rgba(255,215,0,0.12) !important; border-color:rgba(255,215,0,0.5) !important; }
 .action-status { text-align:center; padding:8px 12px; margin-bottom:12px; border-radius:8px; background:rgba(255,157,0,0.1); border:1px solid rgba(255,157,0,0.2); color:#ff9d00; font-size:14px; font-weight:600; }

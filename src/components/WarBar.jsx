@@ -1,7 +1,7 @@
-﻿import { Lock, Flame } from "lucide-react";
+﻿import { Lock, Flame, HelpCircle } from "lucide-react";
 import "./WarBar.css";
 
-export default function WarBar({ data }) {
+export default function WarBar({ data, setActiveExplainer }) {
   const stakerTix = data?.stakerTickets || 0;
   const burnerTix = data?.burnerTickets || 0;
   const total = stakerTix + burnerTix;
@@ -10,6 +10,9 @@ export default function WarBar({ data }) {
 
   return (
     <div className="war-section">
+      <button className="help-icon war-help" onClick={() => setActiveExplainer?.("tickets")} title="Learn about tickets">
+        <HelpCircle size={12} />
+      </button>
       <div className="war-header">
         <span className="war-side"><Lock size={14} color="#ff9d00" /> STAKERS <span className="war-pct">{stakerPct.toFixed(1)}%</span></span>
         <span className="war-title">BURN {data?.burn || data?.epoch || 1} · DAY {data?.forgeCycle || 1} — TICKET SHARE</span>

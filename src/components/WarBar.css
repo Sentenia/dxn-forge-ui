@@ -1,4 +1,5 @@
-﻿.war-section { padding:24px 28px 20px; max-width:900px; margin:0 auto; }
+﻿.war-section { padding:24px 28px 20px; max-width:900px; margin:0 auto; position:relative; }
+.war-help { top:24px; right:28px; }
 .war-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
 .war-title { font-size:14px; font-weight:700; color:#666; letter-spacing:0.12em; }
 .war-side { font-size:14px; font-weight:600; color:#aaa; display:flex; align-items:center; gap:6px; }

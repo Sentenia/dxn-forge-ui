@@ -1,9 +1,9 @@
 ﻿import { useState, useEffect, useRef } from "react";
-import { Zap, Flame, Loader } from "lucide-react";
+import { Zap, Flame, Loader, HelpCircle } from "lucide-react";
 import { fmtTime } from "../utils/format";
 import "./CountdownBar.css";
 
-export default function CountdownBar({ data, actions, wallet }) {
+export default function CountdownBar({ data, actions, wallet, setActiveExplainer }) {
   const [firing, setFiring] = useState(false);
   const [localCountdown, setLocalCountdown] = useState(data?.feeCountdown ?? 0);
   const lastSyncRef = useRef(data?.feeCountdown ?? 0);
@@ -45,6 +45,9 @@ export default function CountdownBar({ data, actions, wallet }) {
 
   return (
     <div className="countdown-bar">
+      <button className="help-icon countdown-help" onClick={() => setActiveExplainer?.("buyAndBurn")} title="Learn about Buy & Burn">
+        <HelpCircle size={12} />
+      </button>
       <div className="countdown-inner">
         <div className="countdown-left">
           <span className="countdown-label">NEXT BUY & BURN</span>
