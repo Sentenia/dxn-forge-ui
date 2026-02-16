@@ -82,7 +82,8 @@
   .price-label { font-size:12px; }
   .price-value { font-size:14px; }
   .price-change { font-size:11px; }
-  .chain-dropdown { left:0; right:auto; min-width:160px; }
+  .chain-dropdown { right:0; left:auto; min-width:180px; width:max-content; }
+  .chain-option { white-space:nowrap; }
   .wallet-dropdown { right:0; left:auto; min-width:260px; max-width:calc(100vw - 24px); }
 }
 
